@@ -3,7 +3,7 @@ from _indigo.lib import indigo_build_client
 
 @ffi.def_extern()
 def attach_cb(client):
-    print('client: ', client)
+    print('attach client: ', client)
     return 0
 
 def doit(name):

@@ -5,6 +5,8 @@ ffibuilder.cdef("""
 
     #define INDIGO_NAME_SIZE      128
 
+    #define INDIGO_MAX_SERVERS    10
+
     typedef struct indigo_client indigo_client;
 
     typedef enum {
@@ -38,29 +40,52 @@ ffibuilder.cdef("""
     } indigo_enable_blob_mode_record;
 
     typedef struct indigo_client {
-            char name[INDIGO_NAME_SIZE];															///< client name
-            bool is_remote;																						///< is remote client
-            void *client_context;																			///< any client specific data
-            indigo_result last_result;																///< result of last bus operation
-            indigo_version version;																		///< client version
+            char name[INDIGO_NAME_SIZE];
+            bool is_remote;
+            void *client_context;
+            indigo_result last_result;
+            indigo_version version;
             indigo_enable_blob_mode_record *enable_blob_mode_records;	///< enable blob mode
 
             /** callback called when client is attached to the bus
              */
             indigo_result (*attach)(indigo_client *client);
-            /** callback called when device broadcast property definition
-             */
             ...;  // tells CFFI that there is more to this struct
     } indigo_client;
+
+    typedef unsigned long int pthread_t;
+
+    typedef struct {
+            ...;
+    } indigo_device;
+
+    typedef struct {
+            char name[INDIGO_NAME_SIZE];            ///< service name
+            char host[INDIGO_NAME_SIZE];            ///< server host name
+            int port;                               ///< server port
+            pthread_t thread;                       ///< client thread ID
+            bool thread_started;                    ///< client thread started/stopped
+            int socket;                             ///< stream socket
+            indigo_device *protocol_adapter;        ///< server protocol adapter
+            char last_error[256];										///< last error reported within client thread
+    } indigo_server_entry;
+
+    indigo_server_entry indigo_available_servers[INDIGO_MAX_SERVERS];
 
     extern "Python" indigo_result attach_cb(indigo_client *);
 
     indigo_client *indigo_build_client(char *client_name, indigo_result (*attach_callback)(indigo_client *client));
+
+    indigo_result indigo_connect_server(const char *name, const char *host, int port, indigo_server_entry **server);
+
     """)
 
 ffibuilder.set_source("_indigo",  r"""
     #include "indigo_bus.h"
+    #include "indigo_client.h"
     indigo_client *indigo_build_client(char *client_name, indigo_result (*attach_callback)(indigo_client *client));
+    indigo_result indigo_connect_server(const char *name, const char *host, int port, indigo_server_entry **server);
+
 """,
   include_dirs = ['../indigo_libs'],
   library_dirs = ['../indigo_libs'],
