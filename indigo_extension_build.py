@@ -67,7 +67,7 @@ ffibuilder.cdef("""
             bool thread_started;                    ///< client thread started/stopped
             int socket;                             ///< stream socket
             indigo_device *protocol_adapter;        ///< server protocol adapter
-            char last_error[256];										///< last error reported within client thread
+            char last_error[256];		    ///< last error reported within client thread
     } indigo_server_entry;
 
     indigo_server_entry indigo_available_servers[INDIGO_MAX_SERVERS];
@@ -78,6 +78,10 @@ ffibuilder.cdef("""
 
     indigo_result indigo_connect_server(const char *name, const char *host, int port, indigo_server_entry **server);
 
+    indigo_result indigo_disconnect_server(indigo_server_entry *server);
+
+    indigo_result indigo_start();
+
     """)
 
 ffibuilder.set_source("_indigo",  r"""
@@ -85,6 +89,8 @@ ffibuilder.set_source("_indigo",  r"""
     #include "indigo_client.h"
     indigo_client *indigo_build_client(char *client_name, indigo_result (*attach_callback)(indigo_client *client));
     indigo_result indigo_connect_server(const char *name, const char *host, int port, indigo_server_entry **server);
+    indigo_result indigo_disconnect_server(indigo_server_entry *server);
+    indigo_result indigo_start();
 
 """,
   include_dirs = ['../indigo_libs'],
