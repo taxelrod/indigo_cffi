@@ -88,9 +88,41 @@ class indigoPy:
         activeIndigoPy = None
         
     def sendXml(self, xmlString):
-        print('------------- Sending: ', xml)
+        print('------------- Sending: ', xmlString)
         self.indigoSocket.send(bytes(xmlString, 'utf-8'))
         time.sleep(self.serverDelay)
+
+    def define_property(self, propPtr):
+        property = propPtr[0]
+        devName = ffi.string(property.device)
+        devPropName = ffi.string(property.name)
+        propCount = property.count
+        propItems = property.items
+        
+        try:
+            deviceDict =  self.indigoProperties[devName]
+        except KeyError:
+            self.indigoProperties[devName] = {}
+            deviceDict =  self.indigoProperties[devName]
+
+        try:
+            itemDict = self.indigoProperties[devName][devPropName]
+        except KeyError:
+            self.indigoProperties[devName][devPropName] = {}
+
+        for i in range(propCount):
+            item = propItems[i]
+            self.indigoProperties[devName][devPropName][item.name] = 'hmmm'
+
+            
+    def printProperties(self):
+        for dev in self.indigoProperties.keys():
+            print('Properties for ', dev)
+            for name in self.indigoProperties[dev].keys():
+                print('\tProperty name ', name)
+                for item in self.indigoProperties[dev][name].keys():
+                    print('\t\tItem: ', ffi.string(item))
+            
         
 
 # Callbacks
@@ -103,8 +135,9 @@ def attach_cb(client):
     return 0
             
 @ffi.def_extern()
-def define_property_cb(client, device, property, message):
-    prop = property[0]  # dereference pointer
+def define_property_cb(client, device, propPtr, message):
+    activeIndigoPy.define_property(propPtr)
+    prop = propPtr[0]
     print('define_property: ', ffi.string(prop.device), ffi.string(prop.name))
 #    print_property_string(property, message)
 #    dev = device[0]  # this is now a device struct

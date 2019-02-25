@@ -10,6 +10,8 @@ if __name__ == "__main__":
     indpy = indigo.indigoPy('takeExposure')
 
     indpy.start()
+
+    indpy.printProperties()
     
     # sequence of commands
 
