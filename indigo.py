@@ -14,13 +14,15 @@ from _indigo.lib import indigo_disconnect_server
 from _indigo.lib import indigo_start
 from _indigo.lib import indigo_build_client
 
+import indigoProperties
+
 activeIndigoPy = None
 
 # Module data
 
 class indigoPy:
 
-    indigoProperties = {}
+    indigoPropDict = {}
     indigoHost = None
     indigoPort = None
     indigoDeviceName = None
@@ -93,36 +95,14 @@ class indigoPy:
         time.sleep(self.serverDelay)
 
     def define_property(self, propPtr):
-        property = propPtr[0]
-        devName = ffi.string(property.device)
-        devPropName = ffi.string(property.name)
-        propCount = property.count
-        propItems = property.items
+
+        (key, value) = indigoProperties.buildPropDictItem(propPtr)
+        self.indigoPropDict[key] = value
         
-        try:
-            deviceDict =  self.indigoProperties[devName]
-        except KeyError:
-            self.indigoProperties[devName] = {}
-            deviceDict =  self.indigoProperties[devName]
-
-        try:
-            itemDict = self.indigoProperties[devName][devPropName]
-        except KeyError:
-            self.indigoProperties[devName][devPropName] = {}
-
-        for i in range(propCount):
-            item = propItems[i]
-            self.indigoProperties[devName][devPropName][item.name] = 'hmmm'
-
             
     def printProperties(self):
-        for dev in self.indigoProperties.keys():
-            print('Properties for ', dev)
-            for name in self.indigoProperties[dev].keys():
-                print('\tProperty name ', name)
-                for item in self.indigoProperties[dev][name].keys():
-                    print('\t\tItem: ', ffi.string(item))
-            
+        for key in self.indigoPropDict.keys():
+            indigoProperties.printPropDictEntry(key, self.indigoPropDict[key])
         
 
 # Callbacks
