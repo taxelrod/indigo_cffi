@@ -119,9 +119,6 @@ def define_property_cb(client, device, propPtr, message):
     activeIndigoPy.define_property(propPtr)
     prop = propPtr[0]
     print('define_property: ', ffi.string(prop.device), ffi.string(prop.name))
-#    print_property_string(property, message)
-#    dev = device[0]  # this is now a device struct
-#    print('device: ', ffi.string(dev.name), dev.version, dev.attach, dev.enumerate_properties)
     return 0
 
 @ffi.def_extern()
