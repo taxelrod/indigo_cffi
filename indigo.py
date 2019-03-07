@@ -129,7 +129,7 @@ class indigoPy:
         dictKey = f"{self.fullIndigoDevName(devName)}.{bytes(propName, 'utf-8')}"
 
         if not dictKey in self.indigoPropDict:
-            print(f"sendCommand: {devName}.{propName} not in known properties")
+            print(f"sendCommand: {dictKey} not in known properties")
             return
 
         # poll loop, waiting for self.updatePending = False, set by update_property
