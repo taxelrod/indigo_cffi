@@ -47,5 +47,5 @@ if __name__ == "__main__":
 
     # Disconnect server
 
-    time.sleep(5)
+    time.sleep(15)
     indpy.stop()
