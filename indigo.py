@@ -126,7 +126,7 @@ class indigoPy:
         
         # get dict entry for propName.  If not found, error for now
 
-        dictKey = f"{devName}.{propName}"
+        dictKey = f"{self.fullIndigoDevName(devName)}.{bytes(propName, 'utf-8')}"
 
         if not dictKey in self.indigoPropDict:
             print(f"sendCommand: {devName}.{propName} not in known properties")
@@ -145,8 +145,6 @@ class indigoPy:
         # sendXml()
         # build XML for command - depends on property Type
         self.sendXml(xmlString)
-
-
         
     def define_property(self, propPtr):
         pending = True
@@ -174,7 +172,8 @@ class indigoPy:
             indigoProperties.printPropDictEntry(key, self.indigoPropDict[key])
         
 
-# Callbacks
+    def fullIndigoDevName(self, devName):
+        return f"{bytes(devName, 'utf-8')} @ {bytes(self.indigoHost, 'utf-8')}"
 
 # Callbacks can access members of the (only) active indigoPy through activeIndigoPy
 
