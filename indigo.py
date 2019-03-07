@@ -173,7 +173,7 @@ class indigoPy:
         
 
     def fullIndigoDevName(self, devName):
-        return f"{bytes(devName, 'utf-8')} @ {bytes(self.indigoHost, 'utf-8')}"
+        return bytes(f"{devName} @ {self.indigoHost}", 'utf-8')
 
 # Callbacks can access members of the (only) active indigoPy through activeIndigoPy
 
