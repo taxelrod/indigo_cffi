@@ -146,7 +146,7 @@ def define_property_cb(client, device, propPtr, message):
     return 0
 
 @ffi.def_extern()
-def update_property_cb(client, device, property, message):
+def update_property_cb(client, device, propPtr, message):
     activeIndigoPy.update_property(propPtr)
     prop = propPtr[0]
     print('update_property: ', ffi.string(prop.device), ffi.string(prop.name))
