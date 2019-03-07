@@ -126,7 +126,7 @@ class indigoPy:
         
         # get dict entry for propName.  If not found, error for now
 
-        dictKey = f"{devName}.{devPropName}"
+        dictKey = f"{devName}.{PropName}"
 
         if not dictKey in self.indigoPropDict:
             print(f"sendCommand: {devName}.{propName} not in known properties")
@@ -150,7 +150,7 @@ class indigoPy:
         
     def define_property(self, propPtr):
         pending = True
-        (key, value) = indigoProperties.buildPropDictItem(propPtr, pending)
+        (key, value) = indigoProperties.buildPropDictItem(propPtr)
         self.indigoPropDict[key] = value
 
     def update_property(self, propPtr):
