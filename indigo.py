@@ -126,7 +126,7 @@ class indigoPy:
         
         # get dict entry for propName.  If not found, error for now
 
-        dictKey = f"{devName}.{PropName}"
+        dictKey = f"{devName}.{propName}"
 
         if not dictKey in self.indigoPropDict:
             print(f"sendCommand: {devName}.{propName} not in known properties")
