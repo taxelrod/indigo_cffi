@@ -120,9 +120,15 @@ class indigoPy:
         self.indigoPropDict[key] = value
 
     def update_property(self, propPtr):
+        (key, value) = indigoProperties.buildPropDictItem(propPtr)
         # find property in indigoPropDict - error if not present
-        # update the value
-        pass
+        if not key in self.indigoPropDict:
+            print(f"update_property error: {key} not in indigoPropDict for update")
+        else:
+            # update the value
+            self.indigoPropDict[key] = value
+            print("update_property:")
+            indigoProperties.printPropDictEntry(key, value)
             
     def printProperties(self):
         for key in self.indigoPropDict.keys():
