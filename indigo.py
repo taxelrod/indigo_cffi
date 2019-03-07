@@ -116,7 +116,6 @@ class indigoPy:
         time.sleep(self.serverDelay)
 
     def define_property(self, propPtr):
-
         (key, value) = indigoProperties.buildPropDictItem(propPtr)
         self.indigoPropDict[key] = value
         

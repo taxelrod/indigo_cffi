@@ -85,7 +85,7 @@ def buildPropDictItem(propPtr):
         if propType == lib.INDIGO_TEXT_VECTOR:
             propItemList.append(textItem(ffi.string(item.name), ffi.string(item.text.value)))
         elif propType == lib.INDIGO_NUMBER_VECTOR:
-            propItemList.append(numberItem(textItem(ffi.string(item.name), ffi.string(item.number.format), item.number.min, item.number.max, item.number.step, item.number.value, item.number.target)))
+            propItemList.append(numberItem(ffi.string(item.name), ffi.string(item.number.format), item.number.min, item.number.max, item.number.step, item.number.value, item.number.target))
         elif propType == lib.INDIGO_SWITCH_VECTOR:
             propItemList.append(switchItem(ffi.string(item.name), item.sw.value))
         elif propType == lib.INDIGO_LIGHT_VECTOR:
