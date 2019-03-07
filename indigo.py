@@ -144,7 +144,7 @@ class indigoPy:
 
         # sendXml()
         # build XML for command - depends on property Type
-        sendXml(xmlString)
+        self.sendXml(xmlString)
 
 
         
