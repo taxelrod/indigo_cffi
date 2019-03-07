@@ -118,7 +118,11 @@ class indigoPy:
     def define_property(self, propPtr):
         (key, value) = indigoProperties.buildPropDictItem(propPtr)
         self.indigoPropDict[key] = value
-        
+
+    def update_property(self, propPtr):
+        # find property in indigoPropDict - error if not present
+        # update the value
+        pass
             
     def printProperties(self):
         for key in self.indigoPropDict.keys():
@@ -143,7 +147,9 @@ def define_property_cb(client, device, propPtr, message):
 
 @ffi.def_extern()
 def update_property_cb(client, device, property, message):
-    print('update_property: ', client, device, property, message)
+    activeIndigoPy.update_property(propPtr)
+    prop = propPtr[0]
+    print('update_property: ', ffi.string(prop.device), ffi.string(prop.name))
     return 0
 
 @ffi.def_extern()
