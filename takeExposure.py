@@ -37,8 +37,11 @@ if __name__ == "__main__":
     
     # sequence of commands
 
-    indpy.sendXml("<newSwitchVector device='ZWO ASI1600MM Pro #0' name='CONNECTION' state='Ok'> <oneSwitch name='DISCONNECTED'>Off</oneSwitch> <oneSwitch name='CONNECTED'>On</oneSwitch></newSwitchVector>")
-    time.sleep(5)
+#    indpy.sendXml("<newSwitchVector device='ZWO ASI1600MM Pro #0' name='CONNECTION' state='Ok'> <oneSwitch name='DISCONNECTED'>Off</oneSwitch> <oneSwitch name='CONNECTED'>On</oneSwitch></newSwitchVector>")
+#    time.sleep(5)
+
+#    indpy.sendCommand('ZWO ASI1600MM Pro #0', 'CONNECTION', {'DISCONNECTED':'Off', 'CONNECTED':'On'})
+    indpy.sendCommand('ZWO ASI1600MM Pro #0', 'CONNECTION', "<newSwitchVector device='ZWO ASI1600MM Pro #0' name='CONNECTION' state='Ok'> <oneSwitch name='DISCONNECTED'>Off</oneSwitch> <oneSwitch name='CONNECTED'>On</oneSwitch></newSwitchVector>")
     
     indpy.sendXml("<newSwitchVector device='ZWO ASI1600MM Pro #0' name='CCD_UPLOAD_MODE' state='Ok'><oneSwitch name='CLIENT'>Off</oneSwitch><oneSwitch name='LOCAL'>On</oneSwitch><oneSwitch name='BOTH'>Off</oneSwitch><oneSwitch name='PREVIEW'>Off</oneSwitch> <oneSwitch name='PREVIEW_LOCAL'>Off</oneSwitch></newSwitchVector>")
     time.sleep(5)

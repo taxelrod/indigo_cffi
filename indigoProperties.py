@@ -65,6 +65,8 @@ class blobItem:
         self.size = size
         self.value = value
 
+# pending is a Boolean, True if we are awaiting an update from the server
+
 def buildPropDictItem(propPtr):
 
     property = propPtr[0]

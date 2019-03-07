@@ -29,6 +29,8 @@ import sys
 import time
 import socket
 
+from dicttoxml import dicttoxml
+
 from _indigo import ffi, lib
 from _indigo.lib import indigo_connect_server
 from _indigo.lib import indigo_disconnect_server
@@ -66,6 +68,9 @@ class indigoPy:
             self.indigoPort = serverPort
         else:
             self.indigoPort = 7624
+
+        self.updatePending = False
+        self.updatePendingName = ''
 
     def start(self):
         global activeIndigoPy
@@ -115,12 +120,46 @@ class indigoPy:
         self.indigoSocket.send(bytes(xmlString, 'utf-8'))
         time.sleep(self.serverDelay)
 
+#    def sendCommand(self, devName, propName, propItemDict):
+    def sendCommand(self, devName, propName, xmlString):
+        # assumed that this is a "newXXX" command
+        
+        # get dict entry for propName.  If not found, error for now
+
+        dictKey = f"{devName}.{devPropName}"
+
+        if not dictKey in self.indigoPropDict:
+            print(f"sendCommand: {devName}.{propName} not in known properties")
+            return
+
+        # poll loop, waiting for self.updatePending = False, set by update_property
+
+        while self.updatePending:
+            time.sleep(self.serverDelay)
+
+        # set self.updatePending = True, self.updatePendingName = propName
+
+        self.updatePending = True
+        self.updatePendingName = dictKey
+
+        # sendXml()
+        # build XML for command - depends on property Type
+        sendXml(xmlString)
+
+
+        
     def define_property(self, propPtr):
-        (key, value) = indigoProperties.buildPropDictItem(propPtr)
+        pending = True
+        (key, value) = indigoProperties.buildPropDictItem(propPtr, pending)
         self.indigoPropDict[key] = value
 
     def update_property(self, propPtr):
         (key, value) = indigoProperties.buildPropDictItem(propPtr)
+
+        if self.updatePendingName == key:
+            self.updatePendingName = ''
+            self.updatePending = False
+            
         # find property in indigoPropDict - error if not present
         if not key in self.indigoPropDict:
             print(f"update_property error: {key} not in indigoPropDict for update")
