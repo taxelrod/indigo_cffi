@@ -55,6 +55,7 @@ class indigoPy:
     indigoSocket = None
 
     serverDelay = 1
+    maxWaitCount = 30
 
     indigoServerPtr = None
     indigoServer = None
@@ -73,6 +74,7 @@ class indigoPy:
 
         self.updatePending = False
         self.updatePendingName = ''
+
 
     def start(self):
         global activeIndigoPy
@@ -139,8 +141,14 @@ class indigoPy:
         # poll loop, waiting for self.updatePending = False, set by update_property
         # NEED TIMEOUT
 
-        while self.updatePending:
+        waitCount = 0
+        while self.updatePending and waitCount<self.maxWaitCount:
             time.sleep(self.serverDelay)
+            waitCount += 1
+
+        if waitCount >= self.maxWaitCount:
+            print(f"sendCommand: timed out waiting for server update")
+            return
 
         # set self.updatePending = True, self.updatePendingName = propName
 
@@ -164,7 +172,7 @@ class indigoPy:
             xmlInnerTag = 'oneSwitch'
             
         else:
-            print("Error.  Command not sent")
+            print(f"sendCommand error: proptype = {propType}.  Command not sent")
             return
         
         xmlString = self.buildXmlCommand(devName, xmlRootTag, xmlInnerTag, propItemDict) 
