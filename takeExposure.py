@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     indpy.sendCommand(indigoDevName, 'CONNECTION', {'DISCONNECTED':'Off', 'CONNECTED':'On'})
     
-    indpy.sendCommand(indigoDevName, 'CCD_UPLOAD_MODE', {'CLIENT':'Off', 'LOCAL':'On', 'BOTH':'Off', 'PREVIEW':,'Off', 'PREVIEW_LOCAL':'Off'})
+    indpy.sendCommand(indigoDevName, 'CCD_UPLOAD_MODE', {'CLIENT':'Off', 'LOCAL':'On', 'BOTH':'Off', 'PREVIEW':'Off', 'PREVIEW_LOCAL':'Off'})
     
     indpy.sendCommand(indigoDevName, 'CCD_EXPOSURE', {'EXPOSURE':'1'})
 
