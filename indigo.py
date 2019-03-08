@@ -175,12 +175,13 @@ class indigoPy:
             print(f"sendCommand error: proptype = {propType}.  Command not sent")
             return
         
-        xmlString = self.buildXmlCommand(devName, xmlRootTag, xmlInnerTag, propItemDict) 
+        xmlString = self.buildXmlCommand(devName, propName, xmlRootTag, xmlInnerTag, propItemDict) 
         self.sendXml(xmlString)
         
-    def buildXmlCommand(self, devName, xmlRootTag, xmlInnerTag, propItemDict):
+    def buildXmlCommand(self, devName, propName, xmlRootTag, xmlInnerTag, propItemDict):
         root = Element(xmlRootTag)
         root.set('device', devName)
+        root.set('name', propName)
         for key in propItemDict:
             newEl = Element(xmlInnerTag, attrib={'name':key})
             newEl.text = propItemDict[key]
