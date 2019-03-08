@@ -209,6 +209,19 @@ class indigoPy:
             self.indigoPropDict[key] = value
             print("update_property:")
             indigoProperties.printPropDictEntry(key, value)
+
+    def delete_property(self, propPtr):
+        (key, value) = indigoProperties.buildPropDictItem(propPtr)
+
+        if self.updatePendingName == key:
+            self.updatePendingName = ''
+            self.updatePending = False
+            
+        # find property in indigoPropDict - error if not present
+        if not key in self.indigoPropDict:
+            print(f"delete_property error: {key} not in indigoPropDict for delete")
+        else:
+            self.indigoPropDict.pop(key)
             
     def printProperties(self):
         for key in self.indigoPropDict.keys():
@@ -241,6 +254,7 @@ def update_property_cb(client, device, propPtr, message):
 
 @ffi.def_extern()
 def delete_property_cb(client, device, property, message):
+    activeIndigoPy.delete_property(propPtr)
     print('delete_property: ', client, device, property, message)
     return 0
 

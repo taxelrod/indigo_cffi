@@ -56,6 +56,8 @@ class lightItem:                      # this is light as in indicator light
     def __init__(self, name, value):
         self.name = name
         self.value = value
+    def __repr__(self):
+        return(f"lightItem {self.name} = {self.value}")
 
 class blobItem:
     def __init__(self, name, format, url, size, value):
@@ -64,8 +66,8 @@ class blobItem:
         self.url = url
         self.size = size
         self.value = value
-
-# pending is a Boolean, True if we are awaiting an update from the server
+    def __repr__(self):
+        return(f"blobItem {self.name} {self.format} {self.url} {self.size}")
 
 def buildPropDictItem(propPtr):
 
@@ -91,9 +93,9 @@ def buildPropDictItem(propPtr):
         elif propType == lib.INDIGO_SWITCH_VECTOR:
             propItemList.append(switchItem(ffi.string(item.name), item.sw.value))
         elif propType == lib.INDIGO_LIGHT_VECTOR:
-            propItemList.append(lightItem(ffi.string(item.name))) # XXX
+            propItemList.append(lightItem(ffi.string(item.name), item.light.value))
         elif propType == lib.INDIGO_BLOB_VECTOR:
-            propItemList.append(blobItem(ffi.string(item.name))) # XXX
+            propItemList.append(blobItem(ffi.string(item.name), ffi.string(item.blob.format), ffi.string(item.blob.url), item.blob.size, item.blob.value))
         else:
             raise RuntimeError(f"Illegal property type {propType} for {dictkey}")
         
