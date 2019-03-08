@@ -173,7 +173,7 @@ class indigoPy:
         root = Element(xmlRootTag)
         root.set('device', self.indigoDeviceName)
         for key in propItemDict:
-            newEl = Element(xmlInnterTag, ,attrib={'name':key})
+            newEl = Element(xmlInnerTag, attrib={'name':key})
             newEl.text = propItemDict[key]
             root.append(newEl)
 
