@@ -38,14 +38,13 @@ if __name__ == "__main__":
     indigoDevName = 'ZWO ASI1600MM Pro #0'
     # sequence of commands
 
-#    indpy.sendCommand('ZWO ASI1600MM Pro #0', 'CONNECTION', {'DISCONNECTED':'Off', 'CONNECTED':'On'})
-    indpy.sendCommand(indigoDevName, 'CONNECTION', "<newSwitchVector device='ZWO ASI1600MM Pro #0' name='CONNECTION' state='Ok'> <oneSwitch name='DISCONNECTED'>Off</oneSwitch> <oneSwitch name='CONNECTED'>On</oneSwitch></newSwitchVector>")
+    indpy.sendCommand(indigoDevName, 'CONNECTION', {'DISCONNECTED':'Off', 'CONNECTED':'On'})
     
-    indpy.sendCommand(indigoDevName, 'CCD_UPLOAD_MODE', "<newSwitchVector device='ZWO ASI1600MM Pro #0' name='CCD_UPLOAD_MODE' state='Ok'><oneSwitch name='CLIENT'>Off</oneSwitch><oneSwitch name='LOCAL'>On</oneSwitch><oneSwitch name='BOTH'>Off</oneSwitch><oneSwitch name='PREVIEW'>Off</oneSwitch> <oneSwitch name='PREVIEW_LOCAL'>Off</oneSwitch></newSwitchVector>")
+    indpy.sendCommand(indigoDevName, 'CCD_UPLOAD_MODE', {'CLIENT':'Off', 'LOCAL':'On', 'BOTH':'Off', 'PREVIEW':,'Off', 'PREVIEW_LOCAL':'Off'})
     
-    indpy.sendCommand(indigoDevName, 'CCD_EXPOSURE', "<newNumberVector device='ZWO ASI1600MM Pro #0' name='CCD_EXPOSURE'> <oneNumber name='EXPOSURE'>1</oneNumber></newNumberVector>")
+    indpy.sendCommand(indigoDevName, 'CCD_EXPOSURE', {'EXPOSURE':'1'})
 
     # Disconnect server
 
-    time.sleep(15)
+    time.sleep(5)
     indpy.stop()

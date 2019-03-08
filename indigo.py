@@ -29,7 +29,9 @@ import sys
 import time
 import socket
 
-from dicttoxml import dicttoxml
+from xml.etree.ElementTree import ElementTree
+from xml.etree.ElementTree import Element
+import xml.etree.ElementTree as etree
 
 from _indigo import ffi, lib
 from _indigo.lib import indigo_connect_server
@@ -120,8 +122,7 @@ class indigoPy:
         self.indigoSocket.send(bytes(xmlString, 'utf-8'))
         time.sleep(self.serverDelay)
 
-#    def sendCommand(self, devName, propName, propItemDict):
-    def sendCommand(self, devName, propName, xmlString):
+    def sendCommand(self, devName, propName, propItemDict):
         # assumed that this is a "newXXX" command
         
         # get dict entry for propName.  If not found, error for now
@@ -132,7 +133,10 @@ class indigoPy:
             print(f"sendCommand: {dictKey} not in known properties")
             return
 
+        dictProps = self.indigoPropDict[dictKey]
+
         # poll loop, waiting for self.updatePending = False, set by update_property
+        # NEED TIMEOUT
 
         while self.updatePending:
             time.sleep(self.serverDelay)
@@ -142,10 +146,39 @@ class indigoPy:
         self.updatePending = True
         self.updatePendingName = dictKey
 
-        # sendXml()
         # build XML for command - depends on property Type
+
+        propType = dictProps[0]
+
+        if propType == lib.INDIGO_TEXT_VECTOR:
+            xmlRootTag = 'newTextVector'
+            xmlInnerTag = 'oneText'
+
+        elif propType == lib.INDIGO_NUMBER_VECTOR:
+            xmlRootTag = 'newNumberVector'
+            xmlInnerTag = 'oneNumber'
+            
+        elif propType == lib.INDIGO_SWITCH_VECTOR:
+            xmlRootTag = 'newSwitchVector'
+            xmlInnerTag = 'oneSwitch'
+            
+        else:
+            print("Error.  Command not sent")
+            return
+        
+        xmlString = self.buildXmlCommand(xmlRootTag, xmlInnerTag, propItemDict) 
         self.sendXml(xmlString)
         
+    def buildXmlCommand(self, xmlRootTag, xmlInnerTag, propItemDict):
+        root = Element(xmlRootTag)
+        root.set('device', self.indigoDeviceName)
+        for key in propItemDict:
+            newEl = Element(xmlInnterTag, ,attrib={'name':key})
+            newEl.text = propItemDict[key]
+            root.append(newEl)
+
+        return etree.tostring(root)
+
     def define_property(self, propPtr):
         pending = True
         (key, value) = indigoProperties.buildPropDictItem(propPtr)
