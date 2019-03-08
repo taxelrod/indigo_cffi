@@ -119,7 +119,8 @@ class indigoPy:
         
     def sendXml(self, xmlString):
         print('------------- Sending: ', xmlString)
-        self.indigoSocket.send(bytes(xmlString, 'utf-8'))
+#        self.indigoSocket.send(bytes(xmlString, 'utf-8'))
+        self.indigoSocket.send(xmlString)
         time.sleep(self.serverDelay)
 
     def sendCommand(self, devName, propName, propItemDict):
@@ -166,12 +167,12 @@ class indigoPy:
             print("Error.  Command not sent")
             return
         
-        xmlString = self.buildXmlCommand(xmlRootTag, xmlInnerTag, propItemDict) 
+        xmlString = self.buildXmlCommand(devName, xmlRootTag, xmlInnerTag, propItemDict) 
         self.sendXml(xmlString)
         
-    def buildXmlCommand(self, xmlRootTag, xmlInnerTag, propItemDict):
+    def buildXmlCommand(self, devName, xmlRootTag, xmlInnerTag, propItemDict):
         root = Element(xmlRootTag)
-        root.set('device', self.indigoDeviceName)
+        root.set('device', devName)
         for key in propItemDict:
             newEl = Element(xmlInnerTag, attrib={'name':key})
             newEl.text = propItemDict[key]
