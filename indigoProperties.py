@@ -26,6 +26,8 @@ Classes to deal with indigo properties
 import _indigo
 from _indigo import ffi, lib
 
+import logging
+
 class textItem:
     def __init__(self, name, value):
         self.name = name
@@ -114,6 +116,6 @@ def printPropDictEntry(pdKey, pdEntry):
     print(pdKey)
     for i in range(propCount):
         item = propItemList[i]
-        print("\t", repr(item))
+        logging.info("\t%s", repr(item))
         
     

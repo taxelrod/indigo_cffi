@@ -28,6 +28,7 @@ so indigoPy is implemented as a singleton, with activeIndigoPy being the active 
 import sys
 import time
 import socket
+import logging
 
 from xml.etree.ElementTree import ElementTree
 from xml.etree.ElementTree import Element
@@ -43,7 +44,9 @@ import indigoProperties
 
 activeIndigoPy = None
 
-# Module data
+logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
+
+# class indigoPy contains all functionality for external interaction with indigo
 
 class indigoPy:
 
@@ -120,8 +123,7 @@ class indigoPy:
         activeIndigoPy = None
         
     def sendXml(self, xmlString):
-        print('------------- Sending: ', xmlString)
-#        self.indigoSocket.send(bytes(xmlString, 'utf-8'))
+        logging.debug('------------- Sending: %s', xmlString)
         self.indigoSocket.send(xmlString)
         time.sleep(self.serverDelay)
 
@@ -133,7 +135,7 @@ class indigoPy:
         dictKey = f"{self.fullIndigoDevName(devName)}.{bytes(propName, 'utf-8')}"
 
         if not dictKey in self.indigoPropDict:
-            print(f"sendCommand: {dictKey} not in known properties")
+            logging.warning(f"sendCommand: {dictKey} not in known properties")
             return
 
         dictProps = self.indigoPropDict[dictKey]
@@ -147,7 +149,7 @@ class indigoPy:
             waitCount += 1
 
         if waitCount >= self.maxWaitCount:
-            print(f"sendCommand: timed out waiting for server update")
+            logging.warning(f"sendCommand: timed out waiting for server update")
             return
 
         # set self.updatePending = True, self.updatePendingName = propName
@@ -172,7 +174,7 @@ class indigoPy:
             xmlInnerTag = 'oneSwitch'
             
         else:
-            print(f"sendCommand error: proptype = {propType}.  Command not sent")
+            logging.warning(f"sendCommand error: proptype = {propType}.  Command not sent")
             return
         
         xmlString = self.buildXmlCommand(devName, propName, xmlRootTag, xmlInnerTag, propItemDict) 
@@ -203,11 +205,11 @@ class indigoPy:
             
         # find property in indigoPropDict - error if not present
         if not key in self.indigoPropDict:
-            print(f"update_property error: {key} not in indigoPropDict for update")
+            logging.warning(f"update_property error: {key} not in indigoPropDict for update")
         else:
             # update the value
             self.indigoPropDict[key] = value
-            print("update_property:")
+            logging.info("update_property:")
             indigoProperties.printPropDictEntry(key, value)
 
     def delete_property(self, propPtr):
@@ -219,7 +221,7 @@ class indigoPy:
             
         # find property in indigoPropDict - error if not present
         if not key in self.indigoPropDict:
-            print(f"delete_property error: {key} not in indigoPropDict for delete")
+            logging.warning(f"delete_property error: {key} not in indigoPropDict for delete")
         else:
             self.indigoPropDict.pop(key)
             
@@ -235,36 +237,37 @@ class indigoPy:
 
 @ffi.def_extern()
 def attach_cb(client):
-    print('attach client: ', client, activeIndigoPy.indigoDeviceName)
+    logging.debug('attach client')
     return 0
             
 @ffi.def_extern()
 def define_property_cb(client, device, propPtr, message):
     activeIndigoPy.define_property(propPtr)
     prop = propPtr[0]
-    print('define_property: ', ffi.string(prop.device), ffi.string(prop.name))
+    logging.debug('define_property: %s %s', ffi.string(prop.device), ffi.string(prop.name))
     return 0
 
 @ffi.def_extern()
 def update_property_cb(client, device, propPtr, message):
     activeIndigoPy.update_property(propPtr)
     prop = propPtr[0]
-    print('update_property: ', ffi.string(prop.device), ffi.string(prop.name))
+    logging.debug('update_property: %s %s', ffi.string(prop.device), ffi.string(prop.name))
     return 0
 
 @ffi.def_extern()
 def delete_property_cb(client, device, property, message):
     activeIndigoPy.delete_property(propPtr)
-    print('delete_property: ', client, device, property, message)
+    prop = propPtr[0]
+    logging.debug('delete_property: %s %s', ffi.string(prop.device), ffi.string(prop.name))
     return 0
 
 @ffi.def_extern()
 def send_message_cb(client, device, message):
-    print('send_message: ', client, device, message)
+    logging.debug('send_message %s', ffi.string(message))
     return 0
 
 @ffi.def_extern()
 def detach_cb(client):
-    print('detach client: ', client)
+    logging.debug('detach client')
     return 0
 
