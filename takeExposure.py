@@ -24,6 +24,7 @@
 
 import indigo
 import time
+import sys
 
 if __name__ == "__main__":
 
@@ -37,6 +38,11 @@ if __name__ == "__main__":
 
     indigoDevName = 'ZWO ASI1600MM Pro #0'
 
+    if len(sys.argv) > 1:
+        expTime = sys.argv[1]
+    else:
+        expTime = '1'
+
     # sequence of commands
 
     indpy.sendCommand(indigoDevName, 'CONNECTION', {'DISCONNECTED':'Off', 'CONNECTED':'On'})
@@ -47,7 +53,7 @@ if __name__ == "__main__":
     
     indpy.sendCommand(indigoDevName, 'PIXEL_FORMAT', {'RAW 8':'On', 'RAW 16':'Off'})
 
-    indpy.sendCommand(indigoDevName, 'CCD_EXPOSURE', {'EXPOSURE':'1'})
+    indpy.sendCommand(indigoDevName, 'CCD_EXPOSURE', {'EXPOSURE':expTime})
 
     # Disconnect server
 

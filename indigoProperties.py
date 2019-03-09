@@ -113,7 +113,7 @@ def printPropDictEntry(pdKey, pdEntry):
     propState = pdEntry[3]
     propItemList = pdEntry[4]
 
-    print(pdKey)
+    logging.info("%s", pdKey)
     for i in range(propCount):
         item = propItemList[i]
         logging.info("\t%s", repr(item))
