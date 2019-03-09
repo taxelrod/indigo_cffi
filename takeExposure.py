@@ -33,9 +33,12 @@ if __name__ == "__main__":
 
     indpy.start()
 
+    time.sleep(5)  # wait for server to deliver all the properties from the camera
+
     indpy.printProperties()
 
     indigoDevName = 'ZWO ASI1600MM Pro #0'
+
     # sequence of commands
 
     indpy.sendCommand(indigoDevName, 'CONNECTION', {'DISCONNECTED':'Off', 'CONNECTED':'On'})
@@ -46,5 +49,5 @@ if __name__ == "__main__":
 
     # Disconnect server
 
-    time.sleep(5)
+    time.sleep(5)  # wait for server to 
     indpy.stop()
