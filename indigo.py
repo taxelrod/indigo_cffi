@@ -44,7 +44,7 @@ import indigoProperties
 
 activeIndigoPy = None
 
-logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
+logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
 
 # class indigoPy contains all functionality for external interaction with indigo
 

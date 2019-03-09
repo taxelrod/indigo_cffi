@@ -42,6 +42,7 @@ if __name__ == "__main__":
     indpy.sendCommand(indigoDevName, 'CONNECTION', {'DISCONNECTED':'Off', 'CONNECTED':'On'})
     
     indpy.sendCommand(indigoDevName, 'CCD_UPLOAD_MODE', {'CLIENT':'Off', 'LOCAL':'On', 'BOTH':'Off', 'PREVIEW':'Off', 'PREVIEW_LOCAL':'Off'})
+
     indpy.sendCommand(indigoDevName, 'CCD_MODE', {'RAW 8 1x1':'Off', 'RAW 16 1x1':'On'})
     
     indpy.sendCommand(indigoDevName, 'PIXEL_FORMAT', {'RAW 8':'Off', 'RAW 16':'On'})

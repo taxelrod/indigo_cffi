@@ -43,6 +43,10 @@ if __name__ == "__main__":
     
     indpy.sendCommand(indigoDevName, 'CCD_UPLOAD_MODE', {'CLIENT':'Off', 'LOCAL':'On', 'BOTH':'Off', 'PREVIEW':'Off', 'PREVIEW_LOCAL':'Off'})
     
+    indpy.sendCommand(indigoDevName, 'CCD_MODE', {'RAW 8 1x1':'On', 'RAW 16 1x1':'Off'})
+    
+    indpy.sendCommand(indigoDevName, 'PIXEL_FORMAT', {'RAW 8':'On', 'RAW 16':'Off'})
+
     indpy.sendCommand(indigoDevName, 'CCD_EXPOSURE', {'EXPOSURE':'1'})
 
     # Disconnect server
