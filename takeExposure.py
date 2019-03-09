@@ -35,8 +35,6 @@ if __name__ == "__main__":
 
     time.sleep(5)  # wait for server to deliver all the properties from the camera
 
-    indpy.printProperties()
-
     indigoDevName = 'ZWO ASI1600MM Pro #0'
 
     # sequence of commands
@@ -49,5 +47,8 @@ if __name__ == "__main__":
 
     # Disconnect server
 
-    time.sleep(5)  # wait for server to 
+    time.sleep(5)  # wait for server to clean up
+
+    indpy.printProperties()
+
     indpy.stop()
