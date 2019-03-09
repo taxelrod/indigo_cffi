@@ -53,7 +53,7 @@ if __name__ == "__main__":
     
     indpy.sendCommand(indigoDevName, 'PIXEL_FORMAT', {'RAW 8':'Off', 'RAW 16':'On'})
     
-    indpy.sendCommand(indigoDevName, 'ASI_ADVANCED', {'BandWidth':50})
+    indpy.sendCommand(indigoDevName, 'ASI_ADVANCED', {'BandWidth':'50'})
 
     indpy.sendCommand(indigoDevName, 'CCD_EXPOSURE', {'EXPOSURE':expTime})
 
