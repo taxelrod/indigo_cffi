@@ -29,16 +29,18 @@ import logging
 
 if __name__ == "__main__":
 
-    logging.basicConfig(format='%(message)s', level=logging.DEBUG)
+    logging.basicConfig(format='%(message)s', level=logging.INFO)
 
     # Start up the indigo instance
     
-    indpy = indigo.indigoPy('takeExposure')
+    indpy = indigo.indigoPy('dumpProperties')
 
     indpy.start()
 
     time.sleep(10)  # wait for server to deliver all the properties from the camera
 
+    print('----------------------------------------------------')
+    
     indpy.printProperties()
 
     indpy.stop()
