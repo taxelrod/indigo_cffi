@@ -25,10 +25,13 @@
 import indigo
 import time
 import sys
+import logging
 
 if __name__ == "__main__":
 
-    # Start up the indigo instanc
+    logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
+
+    # Start up the indigo instance
     
     indpy = indigo.indigoPy('takeExposure')
 
