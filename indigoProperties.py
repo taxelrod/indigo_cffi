@@ -106,16 +106,16 @@ def buildPropDictItem(propPtr):
 
     return (dictKey, dictValue)
     
-def printPropDictEntry(pdKey, pdEntry):
+def printPropDictEntry(pdKey, pdEntry, logLevel=logging.INFO):
     propType = pdEntry[0]
     propCount = pdEntry[1]
     propPerm = pdEntry[2]
     propState = pdEntry[3]
     propItemList = pdEntry[4]
 
-    logging.info("%s", pdKey)
+    logging.log(logLevel, "%s", pdKey)
     for i in range(propCount):
         item = propItemList[i]
-        logging.info("\t%s", repr(item))
+        logging.log(logLevel, "\t%s", repr(item))
         
     

@@ -207,8 +207,8 @@ class indigoPy:
         else:
             # update the value
             self.indigoPropDict[key] = value
-            logging.info("update_property:")
-            indigoProperties.printPropDictEntry(key, value)
+            logging.debug("update_property:")
+            indigoProperties.printPropDictEntry(key, value, logging.DEBUG)
 
     def delete_property(self, propPtr):
         (key, value) = indigoProperties.buildPropDictItem(propPtr)
