@@ -260,8 +260,6 @@ ffibuilder.cdef("""
 
     indigo_result indigo_start();
 
-    void print_property_string(indigo_property *property, const char *message);
-
     """)
 
 ffibuilder.set_source("_indigo",  r"""
@@ -277,7 +275,6 @@ ffibuilder.set_source("_indigo",  r"""
     indigo_result indigo_connect_server(const char *name, const char *host, int port, indigo_server_entry **server);
     indigo_result indigo_disconnect_server(indigo_server_entry *server);
     indigo_result indigo_start();
-    void print_property_string(indigo_property *property, const char *message);
     """,
   include_dirs = ['../indigo_libs'],
   library_dirs = ['../indigo_libs'],
